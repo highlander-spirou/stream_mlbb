@@ -22,6 +22,10 @@ const processors: Record<string, (matchData: IMatchData | undefined) => any> = {
   "pureText": (matchData) => {
     matchData
     return ""
+  }, 
+  "selectImg": (matchData) => {
+    matchData
+    return ""
   }
 }
 
