@@ -1,1 +1,6 @@
 .env
+*.exe
+hinhtuong/*
+!hinhtuong/.gitkeep
+hinhtrangbi/*
+!hinhtrangbi/.gitkeep

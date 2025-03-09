@@ -3,14 +3,18 @@
     "dev": "deno run --watch main.ts"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "@oak/oak": "jsr:@oak/oak",
+    "@fast-xml-parser": "npm:fast-xml-parser"
+  },
+  "fmt": {
+    "semiColons": false
   },
   "lint": {
     "rules": {
       "exclude": [
-        "require-await",
-        "no-empty-interface",
-        "no-explicit-any"
+        "no-explicit-any",
+        "require-await"
       ]
     }
   }

@@ -1,0 +1,51 @@
+22:00:34,https://example.com,success,
+22:00:34,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:34,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:36,https://example.com,success,
+22:00:36,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:36,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:39,https://example.com,success,
+22:00:39,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:39,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:42,https://example.com,success,
+22:00:42,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:42,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:45,https://example.com,success,
+22:00:45,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:45,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:48,https://example.com,success,
+22:00:48,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:48,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:51,https://example.com,success,
+22:00:51,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:51,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:54,https://example.com,success,
+22:00:54,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:54,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:00:57,https://example.com,success,
+22:00:57,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:00:57,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:00,https://example.com,success,
+22:01:00,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:00,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:03,https://example.com,success,
+22:01:03,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:03,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:06,https://example.com,success,
+22:01:06,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:06,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:09,https://example.com,success,
+22:01:09,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:09,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:12,https://example.com,success,
+22:01:12,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:12,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:15,https://example.com,success,
+22:01:15,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:15,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:18,https://example.com,success,
+22:01:18,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:18,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"
+22:01:21,https://example.com,success,
+22:01:21,https://invalid.url,failure,"error sending request for url (https://invalid.url/): client error (Connect): dns error: failed to lookup address information: Name or service not known: failed to lookup address information: Name or service not known"
+22:01:21,https://another-example.com,failure,"error sending request for url (https://another-example.com/): client error (Connect): dns error: failed to lookup address information: No address associated with hostname: failed to lookup address information: No address associated with hostname"

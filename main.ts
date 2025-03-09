@@ -1,95 +1,159 @@
-import { configs } from "./config.ts";
-import { BASE_URL, VMIX_SERVER } from "./constant.ts";
+import { batchSend, formatTime, parseMatchId } from "./lib/core.ts"
+import {
+  createBanPickUrls,
+  createIngameUrls,
+  getGameData,
+  getState,
+  getTeam,
+} from "./lib/game/game_stat.ts"
+import { createPostgameUrls } from "./lib/game/postgame.ts"
+import {
+  resetBanpick,
+  resetPostgame,
+  resetTeamName,
+} from "./lib/game/pregame.ts"
+import { getVmixXML } from "./lib/vmix.ts"
 
-interface IMatchData { }
+/**
+ * **Prepare**
+ *
+ * 1. Get all blocks from Vmix server
+ * 2. Clear all the blocks content
+ * 3. Get the matchId
+ *
+ * **Looping**
+ *
+ * 4. Fetch the data from MLBB_SERVER
+ * 5. Create the URL according to each phase
+ * 6. Stream the change to Vmix server
+ *
+ * **Ending**
+ *
+ * 7. Stream the postgame to Vmix server
+ */
+const stream = async () => {
+  // 1. Get all blocks from Vmix server
+  const {
+    banpick: banpickBlockId,
+    ingame: ingameBlockId,
+    postgame: postgameBlockId,
+  } = await getVmixXML()
 
+  // 2. Clear all the blocks content
+  const resetBanpickUrls = resetBanpick(banpickBlockId)
+  const resetTeamNameUrls = resetTeamName({
+    banpickBlockId,
+    ingameBlockId,
+    postgameBlockId,
+  })
+  const resetPostgameUrls = resetPostgame(postgameBlockId)
+  batchSend([...resetBanpickUrls, ...resetTeamNameUrls, ...resetPostgameUrls])
 
-class MatchData {
-  matchId: string
-  matchData: IMatchData | undefined
+  // 3. Get the matchId
+  const matchId = parseMatchId()
 
-  constructor(matchId: string) {
-    this.matchId = matchId
-  }
+  const startTime = Date.now()
 
-  public async getMatchData() {
-    const rsp = await fetch(BASE_URL + '/?apitoken=' + Deno.env.get("API_TOKEN"))
-    return (await rsp.json())
-  }
+  const interval = setInterval(async () => {
+    try {
+      // 4. Fetch the data from MLBB_SERVER
+      const gameData = await getGameData(matchId)
+      const state = getState(gameData)
+      const { blueTeam, redTeam, judge: _judge } = getTeam(gameData)
+
+      // 7. Stream the postgame if game end
+      if (state === "end") {
+        const postgameUrls = await createPostgameUrls(matchId, postgameBlockId)
+        batchSend(postgameUrls)
+        clearInterval(interval)
+        return
+      }
+
+      // 5. Create the URL according to each phase
+      if (state === "other") {
+        console.log("Game is on loading state, nothing to stream to vmix ...")
+        return
+      }
+      const urls: string[] = []
+      if (state === "ban") {
+        createBanPickUrls({ phase: "ban", blueTeam, redTeam, banpickBlockId })
+          .forEach((url) => {
+            urls.push(url)
+          })
+      } else if (state === "pick") {
+        createBanPickUrls({ phase: "pick", blueTeam, redTeam, banpickBlockId })
+          .forEach((url) => {
+            urls.push(url)
+          })
+      } else if (state === "play") {
+        createIngameUrls(blueTeam, "blue", ingameBlockId).forEach((url) => {
+          urls.push(url)
+        })
+        createIngameUrls(redTeam, "red", ingameBlockId).forEach((url) => {
+          urls.push(url)
+        })
+      }
+      // 6. Stream the change to Vmix server
+      batchSend(urls)
+    } catch (_error) {
+      const { minutes, seconds } = formatTime(startTime)
+      console.log(`${minutes}:${seconds} - fail to execute`)
+    }
+  }, 1000)
 }
 
-const processors: Record<string, (matchData: IMatchData | undefined) => any> = {
-  "pureText": (matchData) => {
-    matchData
-    return ""
-  }, 
-  "selectImg": (matchData) => {
-    matchData
-    return ""
-  }
-}
+const benchmark = async () => {
+  const start = performance.now()
 
-class VmixUpdate {
-  private createTextUpdateUrl(matchData: IMatchData | undefined, blockId: string, selectText: string, processor: string) {
-    const value = processors[processor](matchData)
-    return VMIX_SERVER + "?Function=SetText" + `&Input=${blockId}` + `&SelectedName=${selectText}` + `&Value=${value}`
-  }
+  const {
+    banpick: banpickBlockId,
+    ingame: ingameBlockId,
+    postgame: postgameBlockId,
+  } = await getVmixXML()
+  const matchId = parseMatchId()
+  const gameData = await getGameData(matchId)
+  const { blueTeam, redTeam, judge: _judge } = getTeam(gameData)
 
-  private createImageUpdateUrl(matchData: IMatchData | undefined, blockId: string) {
-    blockId
-    matchData
-    return ""
-  }
+  const urls: string[] = []
 
-  public sendVmixCommand(matchData: IMatchData | undefined) {
-    const promises = configs.map(x => {
-      const updateUrl = x.type === "text"
-        ? this.createTextUpdateUrl(matchData, x.blockId, x.selectText!, x.processor!)
-        : this.createImageUpdateUrl(matchData, x.blockId)
-      return fetch(updateUrl)
+  createBanPickUrls({ phase: "ban", blueTeam, redTeam, banpickBlockId })
+    .forEach((url) => {
+      urls.push(url)
     })
+  createBanPickUrls({ phase: "pick", blueTeam, redTeam, banpickBlockId })
+    .forEach((url) => {
+      urls.push(url)
+    })
+  createIngameUrls(blueTeam, "blue", ingameBlockId).forEach((url) => {
+    urls.push(url)
+  })
+  createIngameUrls(redTeam, "red", ingameBlockId).forEach((url) => {
+    urls.push(url)
+  })
 
-    Promise.allSettled(promises).then((results) =>
-      results.forEach((result) => {
-        if (result.status === "rejected") {
-          console.log(result.reason)
-        }
-      }),
-    )
+  try {
+    const postgameUrls = await createPostgameUrls(matchId, postgameBlockId)
+    postgameUrls.forEach((url) => {
+      urls.push(url)
+    })
+  } catch (_error) {
+    console.log("Game has not end!")
+  }
+
+  console.log(urls)
+
+  batchSend(urls)
+
+  const end = performance.now()
+  console.log(`Execution time: ${(end - start).toFixed(3)} ms`)
+}
+
+async function start() {
+  if (Deno.args.includes("--benchmark")) {
+    await benchmark()
+  } else {
+    await stream()
   }
 }
 
-class Timer {
-  private callbackFn: any
-  private intervalTimeout: undefined | number
-  public fetchInterval: number
-
-  constructor(callbackFn: any, fetchInterval: number) {
-    this.callbackFn = callbackFn
-    this.fetchInterval = fetchInterval
-
-  }
-
-  public stop() {
-    if (this.intervalTimeout) {
-      clearInterval(this.intervalTimeout)
-      this.intervalTimeout = undefined
-    }
-  }
-  public start() {
-    if (this.intervalTimeout) {
-      this.stop()
-    }
-    this.intervalTimeout = setInterval(this.callbackFn(), this.fetchInterval)
-  }
-}
-
-
-const matchData = new MatchData('abcdef')
-const vmixUpdater = new VmixUpdate()
-
-const matchDataTimer = new Timer(matchData.getMatchData(), 2500)
-const updateTimer = new Timer(vmixUpdater.sendVmixCommand(matchData.matchData), 1000)
-
-matchDataTimer.start()
-updateTimer.start()
+await start()
